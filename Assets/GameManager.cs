@@ -2,22 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    // Round info 
     [SerializeField] int maxRound = 3;
 
     private int round = 1;
     private int playerOneScore = 0;
     private int playerTwoScore = 0;
     
+    // Health info
     [SerializeField] int maxHealth = 100;
 
     private int playerOneHealth;
     private int playerTwoHealth;
 
-    void Awake()
+    // Events for decreasing players healths
+    private class IntEvent : UnityEvent<int> { };
+
+    private IntEvent playerOneDamagedEvent;
+    private IntEvent playerTwoDamagedEvent;
+
+    private void Awake()
     {
+        if (playerOneDamagedEvent == null)
+            playerOneDamagedEvent = new IntEvent();
+        if (playerTwoDamagedEvent == null)
+            playerTwoDamagedEvent = new IntEvent();
+
+        playerOneDamagedEvent.AddListener(DecPlayerOneHealth);
+        playerTwoDamagedEvent.AddListener(DecPlayerTwoHealth);
+
         playerOneHealth = maxHealth;
         playerTwoHealth = maxHealth;
     }
@@ -67,13 +84,34 @@ public class GameManager : MonoBehaviour
         //deal with ui stuff lol
     }
 
-    //Getters
-    public int getPlayerOneHealth()
+    private void DecPlayerOneHealth(int damage)
+    {
+        playerOneHealth -= damage;
+    }
+
+    private void DecPlayerTwoHealth(int damage)
+    {
+        playerTwoHealth -= damage;
+    }
+
+    // Setters
+    public void SetPlayerOneDamaged(int damage)
+    {
+        playerOneDamagedEvent.Invoke(damage);
+    }
+
+    public void SetPlayerTwoDamaged(int damage)
+    {
+        playerTwoDamagedEvent.Invoke(damage);
+    }
+
+    // Getters
+    public int GetPlayerOneHealth()
     {
         return playerOneHealth;    
     }
 
-    public int getPlayerTwoHealth()
+    public int GetPlayerTwoHealth()
     {
         return playerTwoHealth;
     }
