@@ -6,7 +6,10 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-    // Round info 
+    //public 
+    [SerializeField] GameObject PauseMenu;
+    
+    // Round info
     [SerializeField] int maxRound = 3;
 
     private int round = 1;
@@ -41,9 +44,19 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            TogglePause();
+
         CheckWinner();
     }
 
+    private void TogglePause()
+    {
+        if (PauseMenu.activeSelf)
+            PauseMenu.SetActive(false);
+        else
+            PauseMenu.SetActive(true);
+    }
     private void CheckGameOver()
     {
         int scoreToWin = (int)Mathf.Ceil(maxRound / 2);
