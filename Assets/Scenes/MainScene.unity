@@ -820,10 +820,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: NunchuckClass
       objectReference: {fileID: 0}
+    - target: {fileID: 2849608378048023474, guid: c3abaaecf59ac974abe2e21e12dbb1c2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7566845189440196083, guid: c3abaaecf59ac974abe2e21e12dbb1c2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.25
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 7566845189440196083, guid: c3abaaecf59ac974abe2e21e12dbb1c2,
         type: 3}
@@ -887,12 +892,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3abaaecf59ac974abe2e21e12dbb1c2, type: 3}
---- !u!1 &896345831 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2849608378048023474, guid: c3abaaecf59ac974abe2e21e12dbb1c2,
-    type: 3}
-  m_PrefabInstance: {fileID: 896345830}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &903385706
 GameObject:
   m_ObjectHideFlags: 0
@@ -1379,12 +1378,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1222597286}
   m_CullTransparentMesh: 0
---- !u!1 &1228872327 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8427748897011620816, guid: 47c83749391591b4eb6055a4f54f1809,
-    type: 3}
-  m_PrefabInstance: {fileID: 8427748896550386183}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1349501059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1615,6 +1608,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1356834218}
   m_CullTransparentMesh: 0
+--- !u!1 &1369746199
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1369746200}
+  m_Layer: 0
+  m_Name: Player2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1369746200
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369746199}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.5, y: -1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1427983332
 GameObject:
   m_ObjectHideFlags: 0
@@ -2495,6 +2518,13 @@ MonoBehaviour:
   playerTwoRounds:
   - {fileID: 1427983332}
   - {fileID: 608814133}
+  characters:
+  - {fileID: 7943211628963361042, guid: 77af5c3027caa8c409465b62c0019a5f, type: 3}
+  - {fileID: 2849608378048023474, guid: c3abaaecf59ac974abe2e21e12dbb1c2, type: 3}
+  - {fileID: 5045675341241869769, guid: 43c1cd31c06d9814abd73ad2f65f5902, type: 3}
+  - {fileID: 8427748897011620816, guid: 47c83749391591b4eb6055a4f54f1809, type: 3}
+  playerOne: {fileID: 1839588309}
+  playerTwo: {fileID: 1369746199}
   maxRound: 3
   round: 1
   playerOneScore: 0
@@ -2515,9 +2545,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  Player1: {fileID: 1228872327}
-  Player2: {fileID: 896345831}
+  Player1: {fileID: 1839588309}
+  Player2: {fileID: 1369746199}
   JumpHeightMultiplier: 2
+--- !u!1 &1839588309
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1839588310}
+  m_Layer: 0
+  m_Name: Player1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1839588310
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1839588309}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.5, y: -1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1963193581
 GameObject:
   m_ObjectHideFlags: 0
@@ -3199,10 +3259,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: SwordClass
       objectReference: {fileID: 0}
+    - target: {fileID: 8427748897011620816, guid: 47c83749391591b4eb6055a4f54f1809,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8427748897011620829, guid: 47c83749391591b4eb6055a4f54f1809,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8
+      value: -7.5
       objectReference: {fileID: 0}
     - target: {fileID: 8427748897011620829, guid: 47c83749391591b4eb6055a4f54f1809,
         type: 3}

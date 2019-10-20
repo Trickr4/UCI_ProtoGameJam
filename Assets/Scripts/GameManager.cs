@@ -18,6 +18,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<GameObject> playerOneRounds;
     [SerializeField] List<GameObject> playerTwoRounds;
 
+    // Class Chosen 
+    [SerializeField] List<GameObject> characters;
+    [SerializeField] GameObject playerOne;
+    [SerializeField] GameObject playerTwo;
+
     private GameObject PauseMenu;
     private GameObject gameOverUI;
     private GameObject winnerTextUI;
@@ -40,6 +45,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        InstantiatePlayers();
+
         playerOneHealthBarImage = playerOneHealthBar.GetComponent<Image>();
         playerTwoHealthBarImage = playerTwoHealthBar.GetComponent<Image>();
 
@@ -65,6 +72,19 @@ public class GameManager : MonoBehaviour
         CheckWinner();
         if (Input.GetKeyDown(KeyCode.Escape))
             TogglePause();
+    }
+
+    private void InstantiatePlayers()
+    {
+        int p1 = PlayerPrefs.GetInt("PlayerOneChar");
+        int p2 = PlayerPrefs.GetInt("PlayerTwoChar");
+
+        GameObject playerOne = Instantiate(characters[p1], new Vector2(-7.5f, -1.5f), Quaternion.identity);
+        GameObject playerTwo = Instantiate(characters[p2], new Vector2(7.5f, -1.5f), Quaternion.identity);
+
+        Player_Input inputScript = GetComponent<Player_Input>();
+        inputScript.Player1 = playerOne;
+        inputScript.Player2 = playerTwo;
     }
 
     private void UpdateHealthBar()
