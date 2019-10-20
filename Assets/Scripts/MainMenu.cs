@@ -9,6 +9,9 @@ public class MainMenu : MonoBehaviour
     private void Awake()
     {
         transitionScript = GetComponent<FadeTransition>();
+
+        // Fade In transition 
+        StartCoroutine(transitionScript.Fade(FadeTransition.FadeDirection.Out));
     }
 
     public void Play()
