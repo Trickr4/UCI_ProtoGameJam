@@ -69,13 +69,8 @@ public class GameManager : MonoBehaviour
 
     private void UpdateHealthBar()
     {
-<<<<<<< HEAD
         playerOneHealthBarImage.fillAmount = ((float)playerOneHealth / (float)maxHealth);
         playerTwoHealthBarImage.fillAmount = ((float)playerTwoHealth / (float)maxHealth);
-=======
-        playerOneHealthBarImage.fillAmount = ((float) playerOneHealth / (float) maxHealth);
-        playerTwoHealthBarImage.fillAmount = ((float) playerTwoHealth / (float) maxHealth);
->>>>>>> 5cb15af0b22e2c1cc2d064ea2bee7cc7b6cca51e
     }
 
     private void TogglePause()
