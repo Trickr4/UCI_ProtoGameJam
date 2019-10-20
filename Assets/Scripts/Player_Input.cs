@@ -24,9 +24,15 @@ public class Player_Input : MonoBehaviour
     Vector2 end1;
     Vector2 end2;
 
-    float waitTime = 3;
+    float waitTime = 0f;
 
-  
+    IEnumerator delayCoroutine;
+
+    IEnumerator delay()
+    {
+        Debug.Log("here");
+        yield return new WaitForSeconds(2.0f);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -37,11 +43,15 @@ public class Player_Input : MonoBehaviour
 
         Screen_size = Screen.width;
         space = Screen_size - ((13f/ 16f) * Screen_size);
+
+        delayCoroutine = delay();
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
+        waitTime += Time.deltaTime;
+        Debug.Log(waitTime);
         if (First_inputs.Count == 3 && Second_inputs.Count == 3)
         {
             //catch it dequeue on empty stack
@@ -52,27 +62,36 @@ public class Player_Input : MonoBehaviour
             end2 = Player2_rb.position + (Direction2 * 2);
             filled = true;
         }
+
+        if (CheckIfPastEndPoint(Direction1, Player1_rb, end1) && CheckIfPastEndPoint(Direction2, Player2_rb, end2))
+        {
+            if (First_inputs.Count != 0 && Second_inputs.Count != 0)
+            {
+                Direction1 = First_inputs.Dequeue();
+                Direction2 = Second_inputs.Dequeue();
+                end1 = NextInput(Direction1, Player1_rb, end1);
+                end2 = NextInput(Direction2, Player2_rb, end2);
+                waitTime = 0f;
+            }
+            else if (First_inputs.Count == 0 && Second_inputs.Count == 0)
+            {
+                Player1_rb.velocity = Vector2.zero;
+                Player2_rb.velocity = Vector2.zero;
+                filled = false;
+            }
+        }
+
         if (!filled)
         {
             Get_Input();
         }
         if (filled)
         {
-            
-            if( CheckIfPastEndPoint(Direction1, Player1_rb, end1) && CheckIfPastEndPoint(Direction2, Player2_rb, end2) )
-            {
-                Direction1 = First_inputs.Dequeue();
-                Direction2 = Second_inputs.Dequeue();
-                end1 = NextInput(Direction1, Player1_rb, end1);
-                end2 = NextInput(Direction2, Player2_rb, end2);
-            }
 
-            else if (First_inputs.Count == 0 && Second_inputs.Count == 0)
-                filled = false;
-            else
+            
+            if (Player1_rb.velocity == Vector2.zero && Player2_rb.velocity == Vector2.zero)
             {
-                waitTime += Time.deltaTime;
-                if (waitTime > 10)
+                if (waitTime > 2f)
                 {
                     Move(Direction1, Player1_rb);
                     Move(Direction2, Player2_rb);
