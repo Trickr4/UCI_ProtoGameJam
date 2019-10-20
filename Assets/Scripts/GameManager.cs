@@ -10,24 +10,16 @@ public class GameManager : MonoBehaviour
 {
     // UI GameObjects 
     [SerializeField] GameObject canvas;
-    [SerializeField] GameObject playerOneHealthBar;
-    private Image playerOneHealthBarImage;
-    [SerializeField] GameObject playerTwoHealthBar;
-    private Image playerTwoHealthBarImage;
-
-    [SerializeField] List<GameObject> playerOneRounds;
-    [SerializeField] List<GameObject> playerTwoRounds;
-
     private GameObject PauseMenu;
     private GameObject gameOverUI;
     private GameObject winnerTextUI;
-
+    
     // Round info
     [SerializeField] int maxRound = 3;
     public int round = 1;
     public int playerOneScore = 0;
     public int playerTwoScore = 0;
-
+    
     // Health info
     [SerializeField] int maxHealth = 100;
     public int playerOneHealth;
@@ -40,9 +32,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        playerOneHealthBarImage = playerOneHealthBar.GetComponent<Image>();
-        playerTwoHealthBarImage = playerTwoHealthBar.GetComponent<Image>();
-
         PauseMenu = canvas.GetComponent<Transform>().GetChild(0).gameObject;
         gameOverUI = canvas.GetComponent<Transform>().GetChild(1).gameObject;
         winnerTextUI = gameOverUI.GetComponent<Transform>().GetChild(0).gameObject;
@@ -61,16 +50,9 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        UpdateHealthBar();
         CheckWinner();
         if (Input.GetKeyDown(KeyCode.Escape))
             TogglePause();
-    }
-
-    private void UpdateHealthBar()
-    {
-        playerOneHealthBarImage.fillAmount = ((float)playerOneHealth / (float)maxHealth);
-        playerTwoHealthBarImage.fillAmount = ((float)playerTwoHealth / (float)maxHealth);
     }
 
     private void TogglePause()
@@ -97,15 +79,13 @@ public class GameManager : MonoBehaviour
 
     private void CheckWinner()
     {
-        if (playerOneHealth == 0)
+        if (playerOneHealth <= 0)
         {
-            playerTwoRounds[playerTwoScore].SetActive(true);
             playerTwoScore++;
             CheckGameOver();
         }
-        if (playerTwoHealth == 0)
+        if (playerTwoHealth <= 0)
         {
-            playerOneRounds[playerOneScore].SetActive(true);
             playerOneScore++;
             CheckGameOver();
         }
@@ -158,7 +138,7 @@ public class GameManager : MonoBehaviour
     // Getters
     public int GetPlayerOneHealth()
     {
-        return playerOneHealth;
+        return playerOneHealth;    
     }
 
     public int GetPlayerTwoHealth()
