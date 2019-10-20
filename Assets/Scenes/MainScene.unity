@@ -473,7 +473,7 @@ PrefabInstance:
     - target: {fileID: 7566845189440196083, guid: c3abaaecf59ac974abe2e21e12dbb1c2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.6
+      value: -6.25
       objectReference: {fileID: 0}
     - target: {fileID: 7566845189440196083, guid: c3abaaecf59ac974abe2e21e12dbb1c2,
         type: 3}
@@ -529,6 +529,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_FlipX
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7483796895964685638, guid: c3abaaecf59ac974abe2e21e12dbb1c2,
+        type: 3}
+      propertyPath: m_GravityScale
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3abaaecf59ac974abe2e21e12dbb1c2, type: 3}
@@ -1772,6 +1777,7 @@ MonoBehaviour:
   speed: 10
   Player1: {fileID: 1228872327}
   Player2: {fileID: 896345831}
+  JumpHeightMultiplier: 2
 --- !u!1 &1963193581
 GameObject:
   m_ObjectHideFlags: 0
@@ -2342,7 +2348,7 @@ PrefabInstance:
     - target: {fileID: 8427748897011620829, guid: 47c83749391591b4eb6055a4f54f1809,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.31
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 8427748897011620829, guid: 47c83749391591b4eb6055a4f54f1809,
         type: 3}
@@ -2398,6 +2404,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Simulated
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404035937328551129, guid: 47c83749391591b4eb6055a4f54f1809,
+        type: 3}
+      propertyPath: m_GravityScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2235171793507527288, guid: 47c83749391591b4eb6055a4f54f1809,
         type: 3}

@@ -439,6 +439,7 @@ MonoBehaviour:
   speed: 0.8125
   Player1: {fileID: 215962547}
   Player2: {fileID: 190623786}
+  JumpHeightMultiplier: 2
 --- !u!4 &1246487163
 Transform:
   m_ObjectHideFlags: 0

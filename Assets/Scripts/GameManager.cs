@@ -79,12 +79,12 @@ public class GameManager : MonoBehaviour
 
     private void CheckWinner()
     {
-        if (playerOneHealth == 0)
+        if (playerOneHealth <= 0)
         {
             playerTwoScore++;
             CheckGameOver();
         }
-        if (playerTwoHealth == 0)
+        if (playerTwoHealth <= 0)
         {
             playerOneScore++;
             CheckGameOver();
