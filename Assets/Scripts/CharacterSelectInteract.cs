@@ -5,54 +5,128 @@ using UnityEngine.SceneManagement;
 
 public class CharacterSelectInteract : MonoBehaviour
 {
-    [SerializeField] GameObject SwordClass;
-    [SerializeField] GameObject NunchuckClass;
-    [SerializeField] GameObject ShieldClass;
-    [SerializeField] GameObject AxeClass;
+    [SerializeField] GameObject playerOneOptions;
+    [SerializeField] GameObject playerTwoOptions;
 
-    private readonly string selectedCharacter = "SelectedCharacter";
+    [SerializeField] float readyIndentDistance = 2;
 
-    public int playerOneIndex = 0;
-    public int playerTwoIndex = 0;
+    private int playerOneIndex = 0;
+    private int playerTwoIndex = 0;
+    private int charCount = 4;
 
-    List<GameObject> Classes = new List<GameObject>();
+    private bool playerOneSelected = false;
+    private bool playerTwoSelected = false;
 
     void Awake()
     {
-        Classes.Add(SwordClass); //0
-        Classes.Add(NunchuckClass); //1
-        Classes.Add(ShieldClass); //2
-        Classes.Add(AxeClass); //3
+        // Get number of characters available
+        charCount = playerOneOptions.transform.childCount;
+
+        // Initially display both player 1 and player 2 brackets 
+        // at index = 0. 
+        DisplayCurrBracket(true);
+        DisplayCurrBracket(false);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        MoveSelections();
+        CheckReady(); 
+    }
+
+    private void MoveSelections()
+    {
+        if (!playerOneSelected && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S)))
         {
+            HideCurrBracket(true);
+
+            if (Input.GetKeyDown(KeyCode.W))
+                playerOneIndex--;
+            else if (Input.GetKeyDown(KeyCode.S))
+                playerOneIndex++;
+
+            playerOneIndex = (playerOneIndex + charCount) % charCount;
+            DisplayCurrBracket(true);
+        }
+        else if (!playerTwoSelected && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)))
+        {
+            HideCurrBracket(false);
+
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+                playerTwoIndex--;
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+                playerTwoIndex++;
+
+            playerTwoIndex = (playerTwoIndex + charCount) % charCount;
+            DisplayCurrBracket(false);
+        }
+    }
+
+    private void CheckReady()
+    {
+        // Start the game if both players are ready. 
+        if (playerOneSelected && playerTwoSelected)
+        {
+            PlayerPrefs.SetInt("PlayerOneChar", playerOneIndex);
+            PlayerPrefs.SetInt("PlayerTwoChar", playerTwoIndex);
+
             SceneManager.LoadScene("MainScene");
         }
-        if (Input.GetKey(KeyCode.W))
-        {
-            playerOneIndex--;
-            playerOneIndex = playerOneIndex % 4;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            playerOneIndex++;
-            playerOneIndex = playerOneIndex % 4;
-        }
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            playerTwoIndex--;
-            playerTwoIndex = playerTwoIndex % 4;
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            playerTwoIndex--;
-            playerTwoIndex = playerTwoIndex % 4;
-        }
 
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A))
+        {
+            bool prevReady = playerOneSelected;
+            playerOneSelected = Input.GetKeyDown(KeyCode.D);
+            ChangeReadyStatus(true, playerOneSelected, prevReady);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            bool prevReady = playerTwoSelected;
+            playerTwoSelected = Input.GetKeyDown(KeyCode.LeftArrow);
+            ChangeReadyStatus(false, playerTwoSelected, prevReady);
+        }
+    }
 
+    // HELPER FUNCTIONS
+    // --------------------------------------------------------------------
+    private GameObject GetHoveringChar(bool p1)
+    {
+        if (p1) 
+            return playerOneOptions.transform.GetChild(playerOneIndex).gameObject;
+        else 
+            return playerTwoOptions.transform.GetChild(playerTwoIndex).gameObject;
+    }
 
+    private void HideCurrBracket(bool p1)
+    {
+        GameObject player = GetHoveringChar(p1);
+        ChangeCharActive(player, false);
+    }
+
+    private void DisplayCurrBracket(bool p1)
+    {
+        GameObject player = GetHoveringChar(p1);
+        ChangeCharActive(player, true);
+    }
+
+    private void ChangeCharActive(GameObject player, bool active)
+    {
+        player.transform.GetChild(0).gameObject.SetActive(active);
+    }
+
+    private void ChangeReadyStatus(bool playerOne, bool readied, bool prevReadyStatus)
+    {
+        GameObject selected = GetHoveringChar(playerOne);
+        float indent = readyIndentDistance;
+        if ((!playerOne && readied) || (playerOne && !readied))
+            indent *= -1;
+
+        if (readied != prevReadyStatus) 
+            selected.transform.position = new Vector2(selected.transform.position.x + indent, selected.transform.position.y);
+
+        if (readied)
+            HideCurrBracket(playerOne);
+        else
+            DisplayCurrBracket(playerOne);
     }
 }

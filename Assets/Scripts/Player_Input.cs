@@ -24,8 +24,8 @@ public class Player_Input : MonoBehaviour
     [SerializeField] float speed = 14f/16f;
 
     //Pass in the player object 
-    [SerializeField] GameObject Player1;
-    [SerializeField] GameObject Player2;
+    public GameObject Player1;
+    public GameObject Player2;
 
     //Stores the Players Directions.
     Vector2 Direction1;
@@ -35,6 +35,10 @@ public class Player_Input : MonoBehaviour
     Vector2 end1;
     Vector2 end2;
 
+    private float FloorHeight;
+    private float JumpHeight;
+    [SerializeField] float JumpHeightMultiplier = 1.5f;
+
     float waitTime = 0f;
 
     // Start is called before the first frame update
@@ -42,8 +46,14 @@ public class Player_Input : MonoBehaviour
     {
         manager = GetComponent<GameManager>();
 
+        
+
         Player1_rb = Player1.GetComponent<Rigidbody2D>();
         Player2_rb = Player2.GetComponent<Rigidbody2D>();
+
+        FloorHeight = Player1_rb.position.y;
+        JumpHeight = Mathf.Abs(FloorHeight * JumpHeightMultiplier);
+
        // Player1.GetComponent<CapsuleCollider2D>();
        // Player1.gameObject.GetComponent();
 
@@ -66,8 +76,8 @@ public class Player_Input : MonoBehaviour
             Debug.Log("Start");
             Direction1 = First_inputs.Dequeue();
             Direction2 = Second_inputs.Dequeue();
-            end1 = Player1_rb.position + (Direction1 * space);
-            end2 = Player2_rb.position + (Direction2 * space);
+            end1 = NextInput(Direction1, Player1_rb);
+            end2 = NextInput(Direction2, Player2_rb);
             filled = true;
 
             
@@ -96,39 +106,51 @@ public class Player_Input : MonoBehaviour
             {
                 if (filled)
                 {
-                    //Log(Direction1.y);
-                    //Check if both player are attacking.
-                    if (Direction1.y <= -0.1)
-                    {
-                        Attack(true);
-                    }
-                    if (Direction2.y <= -0.1)
-                    {
-                        Attack(false);
-                    }
-
+                    
+                    
                     //Check if player queues are empty and set to filled.
                     if (filled && First_inputs.Count == 0 && Second_inputs.Count == 0)
                     {
+                        Player2_rb.position = end2;
+                        Player1_rb.position = end1;
+                        
                         Player1_rb.velocity = Vector2.zero;
                         Player2_rb.velocity = Vector2.zero;
+                        if (Player1_rb.position.y != FloorHeight || Player2_rb.position.y != FloorHeight)
+                        {
+                            end1 = NextInput(Vector2.zero, Player1_rb);
+                            end2 = NextInput(Vector2.zero, Player2_rb);
+                        }
                         filled = false;
+                        Direction1 = Vector2.zero;
+                        Direction2 = Vector2.zero;
                     }
+
                     if (First_inputs.Count != 0)
                     {
                         //Debug.Log(end1);
-                        if (Direction1.y == 0)
+                        if (Direction1.y >= 0)
                             Player1_rb.position = end1;
                         Direction1 = First_inputs.Dequeue();
-                        end1 = NextInput(Direction1, Player1_rb, end1);
+                        end1 = NextInput(Direction1, Player1_rb);
                     }
                     if (Second_inputs.Count != 0)
                     {
                         //Debug.Log(end2);
-                        if (Direction2.y == 0)
+                        if (Direction2.y >= 0)
                             Player2_rb.position = end2;
                         Direction2 = Second_inputs.Dequeue();
-                        end2 = NextInput(Direction2, Player2_rb, end2);
+                        end2 = NextInput(Direction2, Player2_rb);
+                    }
+                    //Log(Direction1.y);
+                    //Check if both player are attacking.
+                    if (Direction1.y < -0)
+                    {
+                        Attack(true);
+                    }
+                    if (Direction2.y < -0)
+                    {
+                        Attack(false);
                     }
 
                     //reset the wait timer.
@@ -148,8 +170,7 @@ public class Player_Input : MonoBehaviour
                 Move(Direction2, Player2_rb);
             }
         }
-            
-        
+
     }
 
 
@@ -198,12 +219,10 @@ public class Player_Input : MonoBehaviour
     {
         //Checks if the player is going right and its end point on the x-axis.
         if (direction.x > 0 && rb.position.x >= end.x)
-        {
-            /*
+        {   
             Debug.Log("RIght " + direction.x);
             Debug.Log(rb.position.x);
             Debug.Log(end);
-            */
             return true;
         }
         //Checks if the player is going left and its end point on the x-axis.
@@ -218,19 +237,26 @@ public class Player_Input : MonoBehaviour
         }
         //Check if the direction is down and the x-axis endpoint is the same as the
         //players position.
-        else if (direction.y == -1 && rb.position.x == end.x)
+        else if (direction.y < 0 && rb.position.x == end.x)
         {
             return true;
         }
+        else if (direction.y > 0 && rb.position.y >= end.y)
+            return true;
         return false;
     }
 
     //Stops the Player movement and changes the endpoint.
-    Vector2 NextInput(Vector2 direction, Rigidbody2D rb, Vector2 end)
+    Vector2 NextInput(Vector2 direction, Rigidbody2D rb)
     {
+        Vector2 end = rb.position;
         rb.velocity = Vector2.zero;
-        end = rb.position + (direction * space);
-        
+        if ( direction.x != 0)
+            end = rb.position + (direction * space);
+        else if (direction.y > 0)
+            end = rb.position + (direction * JumpHeight);
+        else if (direction.y == 0)
+            end = rb.position - (direction * JumpHeight);
         return end;
     }
 
@@ -239,7 +265,8 @@ public class Player_Input : MonoBehaviour
     {
         if (input.x != 0)
             rb.velocity = input * speed;
-
+        else if (input.y > 0)
+            rb.velocity = input * speed;
     }
 
     //Player is attacked if they are in range of the variable space,
@@ -255,6 +282,11 @@ public class Player_Input : MonoBehaviour
                 Debug.Log("player two takes damage");
                 // send damage event to the GameManager
                 manager.SetPlayerOneDamaged(10);
+                if (manager.GetPlayerOneHealth() <= 0)
+                {
+                    First_inputs.Clear();
+                    Second_inputs.Clear();
+                }
                 Debug.Log(manager.GetPlayerOneHealth());
             }
             else
@@ -262,6 +294,11 @@ public class Player_Input : MonoBehaviour
                 Debug.Log("player one takes damage");
                 // send damage event to the GameManager
                 manager.SetPlayerTwoDamaged(10);
+                if(manager.GetPlayerTwoHealth() <= 0)
+                {
+                    First_inputs.Clear();
+                    Second_inputs.Clear();
+                }
                 Debug.Log(manager.GetPlayerTwoHealth());
             }
         }
