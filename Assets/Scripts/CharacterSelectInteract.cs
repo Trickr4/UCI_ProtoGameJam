@@ -20,10 +20,15 @@ public class CharacterSelectInteract : MonoBehaviour
     private bool playerOneSelected = false;
     private bool playerTwoSelected = false;
 
+    private FadeTransition transitionScript;
+
     void Awake()
     {
         // Get number of characters available
         charCount = playerOneOptions.transform.childCount;
+
+        // Fade in transition
+        FadeIn(); 
 
         // Initially display both player 1 and player 2 brackets 
         // at index = 0. 
@@ -38,6 +43,12 @@ public class CharacterSelectInteract : MonoBehaviour
     {
         MoveSelections();
         CheckReady(); 
+    }
+
+    private void FadeIn()
+    {
+        transitionScript = GetComponent<FadeTransition>();
+        StartCoroutine(transitionScript.Fade(FadeTransition.FadeDirection.Out));
     }
 
     private void MoveSelections()
@@ -78,7 +89,7 @@ public class CharacterSelectInteract : MonoBehaviour
             PlayerPrefs.SetInt("PlayerOneChar", playerOneIndex);
             PlayerPrefs.SetInt("PlayerTwoChar", playerTwoIndex);
 
-            SceneManager.LoadScene("MainScene");
+            StartCoroutine(transitionScript.FadeAndLoadScene(FadeTransition.FadeDirection.In, "MainScene"));
         }
 
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A))

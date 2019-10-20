@@ -13,18 +13,17 @@ public class MainMenu : MonoBehaviour
 
     public void Play()
     {
-        //SceneManager.LoadScene("CharacterSelect");
-        StartCoroutine(transitionScript.FadeAndLoadScene(FadeTransition.FadeDirection.In, "CharacterSelect"));
+        StartSceneTransition("CharacterSelect");
     }
 
     public void StartGame()
     {
-        SceneManager.LoadScene("MainScene");
+        StartSceneTransition("MainScene");
     }
 
     public void GoToMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        StartSceneTransition("MainMenu");
     }
 
     public void Quit()
@@ -33,5 +32,8 @@ public class MainMenu : MonoBehaviour
         Debug.Log("QUIT");
     }
 
-    
+    private void StartSceneTransition(string sceneName)
+    {
+        StartCoroutine(transitionScript.FadeAndLoadScene(FadeTransition.FadeDirection.In, sceneName));
+    }
 }

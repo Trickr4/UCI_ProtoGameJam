@@ -16,7 +16,7 @@ public class FadeTransition : MonoBehaviour
     }
 
     // FADE TRANSITION FUNCTIONS
-    private IEnumerator Fade(FadeDirection fadeDirection)
+    public IEnumerator Fade(FadeDirection fadeDirection)
     {
         fadeOutUIImage.gameObject.SetActive(true);
 
@@ -50,7 +50,6 @@ public class FadeTransition : MonoBehaviour
 
     private void SetColorImage(ref float alpha, FadeDirection fadeDirection)
     {
-        print("fadeoutimage = " + fadeOutUIImage);
         fadeOutUIImage.color = new Color(fadeOutUIImage.color.r, fadeOutUIImage.color.g, fadeOutUIImage.color.b, alpha);
         alpha += Time.deltaTime * (1.0f / fadeSpeed) * ((fadeDirection == FadeDirection.Out) ? -1 : 1);
     }
