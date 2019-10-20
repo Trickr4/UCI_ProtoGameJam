@@ -8,6 +8,9 @@ public class CharacterSelectInteract : MonoBehaviour
     [SerializeField] GameObject playerOneOptions;
     [SerializeField] GameObject playerTwoOptions;
 
+    [SerializeField] AudioClip characterSelectSFX;
+    private AudioSource sourceSFX;
+
     [SerializeField] float readyIndentDistance = 2;
 
     private int playerOneIndex = 0;
@@ -26,6 +29,9 @@ public class CharacterSelectInteract : MonoBehaviour
         // at index = 0. 
         DisplayCurrBracket(true);
         DisplayCurrBracket(false);
+
+        //AudioSource
+        sourceSFX = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -38,6 +44,7 @@ public class CharacterSelectInteract : MonoBehaviour
     {
         if (!playerOneSelected && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S)))
         {
+            sourceSFX.PlayOneShot(characterSelectSFX, 1f);
             HideCurrBracket(true);
 
             if (Input.GetKeyDown(KeyCode.W))
@@ -50,6 +57,7 @@ public class CharacterSelectInteract : MonoBehaviour
         }
         else if (!playerTwoSelected && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)))
         {
+            sourceSFX.PlayOneShot(characterSelectSFX, 1f);  
             HideCurrBracket(false);
 
             if (Input.GetKeyDown(KeyCode.UpArrow))

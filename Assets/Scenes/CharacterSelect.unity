@@ -2780,6 +2780,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerOneOptions: {fileID: 1194629640}
   playerTwoOptions: {fileID: 1162716341}
+  characterSelectSFX: {fileID: 8300000, guid: d30a0ee78da62c7449e575a3ad2e8f4a, type: 3}
   readyIndentDistance: 2
 --- !u!4 &1632733018
 Transform:
