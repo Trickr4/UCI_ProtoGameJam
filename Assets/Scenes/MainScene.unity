@@ -473,7 +473,7 @@ PrefabInstance:
     - target: {fileID: 7566845189440196083, guid: c3abaaecf59ac974abe2e21e12dbb1c2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7566845189440196083, guid: c3abaaecf59ac974abe2e21e12dbb1c2,
         type: 3}
@@ -524,6 +524,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1998454753021862620, guid: c3abaaecf59ac974abe2e21e12dbb1c2,
+        type: 3}
+      propertyPath: m_FlipX
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3abaaecf59ac974abe2e21e12dbb1c2, type: 3}
@@ -1462,7 +1467,7 @@ Transform:
   m_GameObject: {fileID: 1505588026}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -3, z: 0}
-  m_LocalScale: {x: 0.49767795, y: 0.057427697, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.057427697, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -2337,12 +2342,12 @@ PrefabInstance:
     - target: {fileID: 8427748897011620829, guid: 47c83749391591b4eb6055a4f54f1809,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5
+      value: -0.31
       objectReference: {fileID: 0}
     - target: {fileID: 8427748897011620829, guid: 47c83749391591b4eb6055a4f54f1809,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.6
+      value: -1.57
       objectReference: {fileID: 0}
     - target: {fileID: 8427748897011620829, guid: 47c83749391591b4eb6055a4f54f1809,
         type: 3}
@@ -2387,6 +2392,16 @@ PrefabInstance:
     - target: {fileID: 8427748897011620829, guid: 47c83749391591b4eb6055a4f54f1809,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404035937328551129, guid: 47c83749391591b4eb6055a4f54f1809,
+        type: 3}
+      propertyPath: m_Simulated
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2235171793507527288, guid: 47c83749391591b4eb6055a4f54f1809,
+        type: 3}
+      propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:

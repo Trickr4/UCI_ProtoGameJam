@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player_Input : MonoBehaviour
 {
+    GameManager manager;
+
     //Store Player input into a queue
     Queue<Vector2> First_inputs = new Queue<Vector2>();
     Queue<Vector2> Second_inputs = new Queue<Vector2>();
@@ -19,7 +21,7 @@ public class Player_Input : MonoBehaviour
     Rigidbody2D Player2_rb;
 
     //Stores player movement speed.
-    [SerializeField] float speed = 13f/16f;
+    [SerializeField] float speed = 14f/16f;
 
     //Pass in the player object 
     [SerializeField] GameObject Player1;
@@ -38,12 +40,17 @@ public class Player_Input : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        manager = GetComponent<GameManager>();
+
         Player1_rb = Player1.GetComponent<Rigidbody2D>();
         Player2_rb = Player2.GetComponent<Rigidbody2D>();
+       // Player1.GetComponent<CapsuleCollider2D>();
+       // Player1.gameObject.GetComponent();
 
-        space = (13f / 16f);
+        space = (14f / 16f);
     }
 
+    
     // Update is called once per frame
     void Update()
     {
@@ -80,7 +87,7 @@ public class Player_Input : MonoBehaviour
 
             }
         }
-
+        
         //if player is queues are filled.
         else if (filled)
         {
@@ -89,12 +96,13 @@ public class Player_Input : MonoBehaviour
             {
                 if (filled)
                 {
+                    //Log(Direction1.y);
                     //Check if both player are attacking.
-                    if (Direction1.y >= -1)
+                    if (Direction1.y <= -0.1)
                     {
                         Attack(true);
                     }
-                    if (Direction2.y >= -1)
+                    if (Direction2.y <= -0.1)
                     {
                         Attack(false);
                     }
@@ -134,7 +142,7 @@ public class Player_Input : MonoBehaviour
         if (Player1_rb.velocity == Vector2.zero && Player2_rb.velocity == Vector2.zero)
         {
             //Time buffer for movement.
-            if (waitTime > 2f)
+            if (waitTime > .1f)
             {
                 Move(Direction1, Player1_rb);
                 Move(Direction2, Player2_rb);
@@ -143,6 +151,47 @@ public class Player_Input : MonoBehaviour
             
         
     }
+
+
+
+    /*
+    public void OnTriggerEnter2D(Collider2D collider)
+    {
+        Debug.Log("here");
+        if (collider)
+        {
+            Debug.Log("here");
+            if (First_inputs.Count != 0)
+            {
+                //Debug.Log(end1);
+                Player1_rb.position = end1;
+                Direction1 = First_inputs.Dequeue();
+                end1 = NextInput(Direction1, Player1_rb, end1);
+            }
+            else
+            {
+                Player1_rb.position = end1;
+                Direction1 = Vector2.zero;
+            }
+            if (Second_inputs.Count != 0)
+            {
+                //Debug.Log(end2);
+                Player2_rb.position = end2;
+                Direction2 = Second_inputs.Dequeue();
+                end2 = NextInput(Direction2, Player2_rb, end2);
+            }
+            else
+            {
+                Player2_rb.position = end2;
+                Direction2 = Vector2.zero;
+            }
+            if (filled && First_inputs.Count == 0 && Second_inputs.Count == 0)
+            {
+                filled = false;
+            }
+        }
+    }
+    */
 
     //Checks if the Player GameObject passes or reach an endpoint on the x axis
     bool CheckIfPastEndPoint(Vector2 direction, Rigidbody2D rb, Vector2 end)
@@ -198,18 +247,22 @@ public class Player_Input : MonoBehaviour
     private void Attack(bool playerOneAttacked)
     {
         //Debug.Log("Player One Attacked = " + playerOneAttacked);
-
+        //Debug.Log(AttackInRange());
         if (AttackInRange())
         {
             if (playerOneAttacked)
             {
                 Debug.Log("player two takes damage");
                 // send damage event to the GameManager
+                manager.SetPlayerOneDamaged(10);
+                Debug.Log(manager.GetPlayerOneHealth());
             }
             else
             {
                 Debug.Log("player one takes damage");
                 // send damage event to the GameManager
+                manager.SetPlayerTwoDamaged(10);
+                Debug.Log(manager.GetPlayerTwoHealth());
             }
         }
     }
@@ -221,7 +274,9 @@ public class Player_Input : MonoBehaviour
         float Larger = Mathf.Max(Player1.transform.position.x, Player2.transform.position.x);
         float Smaller = Mathf.Min(Player1.transform.position.x, Player2.transform.position.x);
         //Debug.Log(Larger - Smaller);
-        return Larger - Smaller <= space;
+        Debug.Log("Distance" + Mathf.Abs(Larger - Smaller));
+        Debug.Log("Space" + (space + (space / 2)));
+        return Mathf.Abs(Larger - Smaller) <= space + (space/2);
     }
 
     //Gets the player input and store them in their respective player queue.
