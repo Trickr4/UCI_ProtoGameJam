@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
                                            Quaternion.identity);
         GameObject playerTwo = Instantiate(characters[p2], new Vector2(initialXDistanceToOrigin, initialYDistanceToOrigin), 
                                            Quaternion.identity);
+        playerTwo.GetComponent<SpriteRenderer>().flipX = true;
 
         Player_Input inputScript = GetComponent<Player_Input>();
         inputScript.Player1 = playerOne;
