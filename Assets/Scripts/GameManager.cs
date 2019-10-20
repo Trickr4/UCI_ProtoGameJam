@@ -1,35 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    //public 
-    [SerializeField] GameObject PauseMenu;
+    // UI GameObjects 
+    [SerializeField] GameObject canvas;
+    private GameObject PauseMenu;
+    private GameObject gameOverUI;
+    private GameObject winnerTextUI;
     
     // Round info
     [SerializeField] int maxRound = 3;
-
-    private int round = 1;
-    private int playerOneScore = 0;
-    private int playerTwoScore = 0;
+    public int round = 1;
+    public int playerOneScore = 0;
+    public int playerTwoScore = 0;
     
     // Health info
     [SerializeField] int maxHealth = 100;
-
-    private int playerOneHealth;
-    private int playerTwoHealth;
+    public int playerOneHealth;
+    public int playerTwoHealth;
 
     // Events for decreasing players healths
     private class IntEvent : UnityEvent<int> { };
-
     private IntEvent playerOneDamagedEvent;
     private IntEvent playerTwoDamagedEvent;
 
     private void Awake()
     {
+        PauseMenu = canvas.GetComponent<Transform>().GetChild(0).gameObject;
+        gameOverUI = canvas.GetComponent<Transform>().GetChild(1).gameObject;
+        winnerTextUI = gameOverUI.GetComponent<Transform>().GetChild(0).gameObject;
+
         if (playerOneDamagedEvent == null)
             playerOneDamagedEvent = new IntEvent();
         if (playerTwoDamagedEvent == null)
@@ -44,10 +50,9 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        CheckWinner();
         if (Input.GetKeyDown(KeyCode.Escape))
             TogglePause();
-
-        CheckWinner();
     }
 
     private void TogglePause()
@@ -57,17 +62,19 @@ public class GameManager : MonoBehaviour
         else
             PauseMenu.SetActive(true);
     }
+
     private void CheckGameOver()
     {
-        int scoreToWin = (int)Mathf.Ceil(maxRound / 2);
-        if (playerOneScore == scoreToWin || playerTwoScore == scoreToWin)
-        {
-            GameOver();
-        }
+        ResetHealth();
+
+        int scoreToWin = (int)Mathf.Ceil(maxRound / 2f);
+
+        if (playerOneScore == scoreToWin)
+            GameOver(1);
+        else if (playerTwoScore == scoreToWin)
+            GameOver(2);
         else
-        {
             StartNewRound();
-        }
     }
 
     private void CheckWinner()
@@ -88,13 +95,23 @@ public class GameManager : MonoBehaviour
     {
         round++;
         DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(canvas);
         SceneManager.LoadScene("MainScene");
     }
 
-    private void GameOver()
+    private void GameOver(int winner)
     {
         Time.timeScale = 0;
-        //deal with ui stuff lol
+
+        gameOverUI.SetActive(true);
+        TextMeshProUGUI winText = winnerTextUI.GetComponent<TextMeshProUGUI>();
+        winText.text = "Player " + winner.ToString() + " Wins!";
+    }
+
+    private void ResetHealth()
+    {
+        playerOneHealth = maxHealth;
+        playerTwoHealth = maxHealth;
     }
 
     private void DecPlayerOneHealth(int damage)
