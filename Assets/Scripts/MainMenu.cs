@@ -7,6 +7,11 @@ public class MainMenu : MonoBehaviour
 {
     public void Play()
     {
+        SceneManager.LoadScene("CharacterSelect");
+    }
+
+    public void StartGame()
+    {
         SceneManager.LoadScene("MainScene");
     }
 
