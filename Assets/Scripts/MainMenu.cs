@@ -1,13 +1,20 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    private FadeTransition transitionScript;
+
+    private void Awake()
+    {
+        transitionScript = GetComponent<FadeTransition>();
+    }
+
     public void Play()
     {
-        SceneManager.LoadScene("CharacterSelect");
+        //SceneManager.LoadScene("CharacterSelect");
+        StartCoroutine(transitionScript.FadeAndLoadScene(FadeTransition.FadeDirection.In, "CharacterSelect"));
     }
 
     public void StartGame()
@@ -25,4 +32,6 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
         Debug.Log("QUIT");
     }
+
+    
 }
