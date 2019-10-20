@@ -32,9 +32,9 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        PauseMenu = canvas.GetComponent<Transform>().GetChild(1).gameObject;
-        gameOverUI = canvas.GetComponent<Transform>().GetChild(2).gameObject;
-        winnerTextUI = gameOverUI.GetComponent<Transform>().GetChild(1).gameObject;
+        PauseMenu = canvas.GetComponent<Transform>().GetChild(0).gameObject;
+        gameOverUI = canvas.GetComponent<Transform>().GetChild(1).gameObject;
+        winnerTextUI = gameOverUI.GetComponent<Transform>().GetChild(0).gameObject;
 
         if (playerOneDamagedEvent == null)
             playerOneDamagedEvent = new IntEvent();
