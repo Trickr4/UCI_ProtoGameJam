@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8427748897011620829}
   - component: {fileID: 8427748897011620830}
-  - component: {fileID: 8427748897011620831}
-  - component: {fileID: 1238245377335110659}
   - component: {fileID: 2404035937328551129}
   - component: {fileID: 2330555015813764412}
+  - component: {fileID: 2235171793507527288}
   m_Layer: 0
   m_Name: SwordClass
   m_TagString: Untagged
@@ -85,37 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &8427748897011620831
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8427748897011620816}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.19276994}
-  m_Size: {x: 0.73160076, y: 1.5087641}
-  m_Direction: 0
---- !u!114 &1238245377335110659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8427748897011620816}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d6deff9a745ce046b4429bda9c71337, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attack: 25
-  move: 3
-  defense: 0
 --- !u!50 &2404035937328551129
 Rigidbody2D:
   serializedVersion: 4
@@ -152,3 +120,19 @@ MonoBehaviour:
   attack: 25
   move: 3
   defense: 0
+--- !u!70 &2235171793507527288
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8427748897011620816}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.21293187}
+  m_Size: {x: 0.7350579, y: 1.4605727}
+  m_Direction: 0

@@ -42,7 +42,7 @@ public class Player_Input : MonoBehaviour
 
 
         Screen_size = Screen.width;
-        space = Screen_size - ((13f/ 16f) * Screen_size);
+        space = (13f/ 16f);
 
         delayCoroutine = delay();
     }
@@ -51,7 +51,7 @@ public class Player_Input : MonoBehaviour
     void LateUpdate()
     {
         waitTime += Time.deltaTime;
-        Debug.Log(waitTime);
+        // Goes into statement if the list is full
         if (First_inputs.Count == 3 && Second_inputs.Count == 3)
         {
             //catch it dequeue on empty stack
@@ -61,26 +61,56 @@ public class Player_Input : MonoBehaviour
             end1 = Player1_rb.position + (Direction1 * 2);
             end2 = Player2_rb.position + (Direction2 * 2);
             filled = true;
+
+            if (Direction1.y == -1)
+            {
+                Attack(true);
+            }
+            if (Direction2.y == -1)
+            {
+                Attack(false);
+            }
         }
 
-        if (CheckIfPastEndPoint(Direction1, Player1_rb, end1) && CheckIfPastEndPoint(Direction2, Player2_rb, end2))
+        //checks if its at the end postion of the x direction.
+        if (waitTime > 2f)
         {
-            if (First_inputs.Count != 0 && Second_inputs.Count != 0)
+            if (CheckIfPastEndPoint(Direction1, Player1_rb, end1) && CheckIfPastEndPoint(Direction2, Player2_rb, end2))
             {
-                Direction1 = First_inputs.Dequeue();
-                Direction2 = Second_inputs.Dequeue();
-                end1 = NextInput(Direction1, Player1_rb, end1);
-                end2 = NextInput(Direction2, Player2_rb, end2);
-                waitTime = 0f;
-            }
-            else if (First_inputs.Count == 0 && Second_inputs.Count == 0)
-            {
-                Player1_rb.velocity = Vector2.zero;
-                Player2_rb.velocity = Vector2.zero;
-                filled = false;
+                if (First_inputs.Count != 0 && Second_inputs.Count != 0)
+                {
+                    if (Direction1.y == -1)
+                    {
+                        Attack(true);
+                    }
+                    if (Direction2.y == -1)
+                    {
+                        Attack(false);
+                    }
+                    Direction1 = First_inputs.Dequeue();
+                    Direction2 = Second_inputs.Dequeue();
+                    end1 = NextInput(Direction1, Player1_rb, end1);
+                    end2 = NextInput(Direction2, Player2_rb, end2);
+
+                    waitTime = 0f;
+                }
+                else if (First_inputs.Count == 0 && Second_inputs.Count == 0)
+                {
+                    if (Direction1.y == -1)
+                    {
+                        Attack(true);
+                    }
+                    if (Direction2.y == -1)
+                    {
+                        Attack(false);
+                    }
+                    Player1_rb.velocity = Vector2.zero;
+                    Player2_rb.velocity = Vector2.zero;
+
+                    filled = false;
+                }
             }
         }
-
         if (!filled)
         {
             Get_Input();
@@ -103,11 +133,11 @@ public class Player_Input : MonoBehaviour
     bool CheckIfPastEndPoint(Vector2 direction, Rigidbody2D rb, Vector2 end)
     {
         
-        if (direction.x > 0 && rb.position.x >= end.x && rb.position.x >= end.x)
+        if (direction.x >= 0 && rb.position.x >= end.x && rb.position.x >= end.x)
         {
             return true;
         }
-        else if (direction.x < 0 && rb.position.x <= end.x && rb.position.x <= end.x)
+        else if (direction.x <= 0 && rb.position.x <= end.x && rb.position.x <= end.x)
         {
             return true;
         }
@@ -126,6 +156,30 @@ public class Player_Input : MonoBehaviour
     {
         rb.velocity = input * speed;
         
+    }
+
+    private void Attack(bool playerOneAttacked)
+    {
+        Debug.Log("Player One Attacked = " + playerOneAttacked);
+
+        if (AttackInRange())
+        {
+            if (playerOneAttacked)
+            {
+                Debug.Log("player two takes damage");
+                // send damage event to the GameManager
+            }
+            else
+            {
+                Debug.Log("player one takes damage");
+                // send damage event to the GameManager
+            }
+        }   
+    }
+
+    private bool AttackInRange()
+    {
+        return Mathf.Abs(Player1.transform.position.x) - Mathf.Abs(Player2.transform.position.x) <= space;
     }
 
     void Get_Input()
