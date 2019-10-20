@@ -525,10 +525,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 960, y: 540}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -2409,8 +2409,8 @@ MonoBehaviour:
   - {fileID: 2849608378048023474, guid: c3abaaecf59ac974abe2e21e12dbb1c2, type: 3}
   - {fileID: 5045675341241869769, guid: 43c1cd31c06d9814abd73ad2f65f5902, type: 3}
   - {fileID: 8427748897011620816, guid: 47c83749391591b4eb6055a4f54f1809, type: 3}
-  playerOne: {fileID: 0}
-  playerTwo: {fileID: 0}
+  initialXDistanceToOrigin: 7.5
+  initialYDistanceToOrigin: -1.5
   maxRound: 3
   round: 1
   playerOneScore: 0
