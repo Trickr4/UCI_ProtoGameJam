@@ -45,10 +45,14 @@ public class GameManager : MonoBehaviour
     private IntEvent playerOneDamagedEvent;
     private IntEvent playerTwoDamagedEvent;
 
+    private bool playersInstantiated = false;
+
     private void Awake()
     {
-        InstantiatePlayers();
-
+        if (!playersInstantiated)
+        {
+            InstantiatePlayers();
+        }
         playerOneHealthBarImage = playerOneHealthBar.GetComponent<Image>();
         playerTwoHealthBarImage = playerTwoHealthBar.GetComponent<Image>();
 
@@ -70,6 +74,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        //print(playersInstantiated);
+
         UpdateHealthBar();
         CheckWinner();
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -78,20 +84,29 @@ public class GameManager : MonoBehaviour
 
     private void InstantiatePlayers()
     {
+        print("INSTANTIATE");
         int p1 = PlayerPrefs.GetInt("PlayerOneChar");
         int p2 = PlayerPrefs.GetInt("PlayerTwoChar");
 
-        GameObject playerOne = Instantiate(characters[p1], new Vector2(-initialXDistanceToOrigin, initialYDistanceToOrigin),
+        playerOne = Instantiate(characters[p1], new Vector2(-initialXDistanceToOrigin, initialYDistanceToOrigin),
                                            Quaternion.identity);
-        GameObject playerTwo = Instantiate(characters[p2], new Vector2(initialXDistanceToOrigin, initialYDistanceToOrigin), 
+        playerTwo = Instantiate(characters[p2], new Vector2(initialXDistanceToOrigin, initialYDistanceToOrigin), 
                                            Quaternion.identity);
         playerTwo.GetComponent<SpriteRenderer>().flipX = true;
 
+        AttachPlayers();
+    }
+
+    private void AttachPlayers()
+    {
         Player_Input inputScript = GetComponent<Player_Input>();
         inputScript.Player1 = playerOne;
         inputScript.Player2 = playerTwo;
-    }
+        inputScript.Player1_rb = playerOne.GetComponent<Rigidbody2D>();
+        inputScript.Player2_rb = playerTwo.GetComponent<Rigidbody2D>();
 
+        playersInstantiated = true;
+    }
     private void UpdateHealthBar()
     {
         playerOneHealthBarImage.fillAmount = ((float)playerOneHealth / (float)maxHealth);
@@ -141,6 +156,7 @@ public class GameManager : MonoBehaviour
         round++;
         DontDestroyOnLoad(gameObject);
         DontDestroyOnLoad(canvas);
+        playersInstantiated = false;
         SceneManager.LoadScene("MainScene");
     }
 
